@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PatientRouteImport } from './routes/patient'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as AnalyzeRouteImport } from './routes/analyze'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ApiAnalyzeRouteImport } from './routes/api/analyze'
@@ -23,6 +24,11 @@ const PatientRoute = PatientRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnalyzeRoute = AnalyzeRouteImport.update({
+  id: '/analyze',
+  path: '/analyze',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -43,6 +49,7 @@ const ApiAnalyzeRoute = ApiAnalyzeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/analyze': typeof AnalyzeRoute
   '/login': typeof LoginRoute
   '/patient': typeof PatientRoute
   '/api/analyze': typeof ApiAnalyzeRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/analyze': typeof AnalyzeRoute
   '/login': typeof LoginRoute
   '/patient': typeof PatientRoute
   '/api/analyze': typeof ApiAnalyzeRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/analyze': typeof AnalyzeRoute
   '/login': typeof LoginRoute
   '/patient': typeof PatientRoute
   '/api/analyze': typeof ApiAnalyzeRoute
@@ -65,14 +74,28 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/patient' | '/api/analyze' | '/api/chat'
+  fullPaths:
+    | '/'
+    | '/analyze'
+    | '/login'
+    | '/patient'
+    | '/api/analyze'
+    | '/api/chat'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/patient' | '/api/analyze' | '/api/chat'
-  id: '__root__' | '/' | '/login' | '/patient' | '/api/analyze' | '/api/chat'
+  to: '/' | '/analyze' | '/login' | '/patient' | '/api/analyze' | '/api/chat'
+  id:
+    | '__root__'
+    | '/'
+    | '/analyze'
+    | '/login'
+    | '/patient'
+    | '/api/analyze'
+    | '/api/chat'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AnalyzeRoute: typeof AnalyzeRoute
   LoginRoute: typeof LoginRoute
   PatientRoute: typeof PatientRoute
   ApiAnalyzeRoute: typeof ApiAnalyzeRoute
@@ -93,6 +116,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/analyze': {
+      id: '/analyze'
+      path: '/analyze'
+      fullPath: '/analyze'
+      preLoaderRoute: typeof AnalyzeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -121,6 +151,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AnalyzeRoute: AnalyzeRoute,
   LoginRoute: LoginRoute,
   PatientRoute: PatientRoute,
   ApiAnalyzeRoute: ApiAnalyzeRoute,
